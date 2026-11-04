@@ -11,7 +11,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap">
 <style>
-  /* 版面（沿用 2027 巴黎瑞士查詢）：首頁＝主視覺 → 找人 → 兩團彩色卡（左高雄、右桃園）→ 已完成；點進一團＝漸層團頭 → 機票（登機證）→ 名單 */
+  /* 版面（沿用 2027 巴黎瑞士查詢）：首頁＝主視覺 → 找人 → 兩團彩色卡（左高雄、右桃園）→ 總名單按鈕；點進一團＝漸層團頭 → 機票（登機證）→ 名單 */
   :root{
     --bg:#f7f1e8; --bg-2:#efe5d6; --surface:#ffffff; --surface-2:#fbf7f1; --fg:#2f2a26; --muted:#7a6f66; --line:#e8dfd2;
     --khh:#9a2f3c; --khh-soft:#f8e8ea; --tpe:#245d8a; --tpe-soft:#e7eff7; --self:#8d6c2c; --self-soft:#f6eedd;
@@ -94,10 +94,6 @@
   .allbtn{align-self:center;text-decoration:none;font-weight:700;color:var(--gold-deep);background:var(--surface);border:1.5px solid var(--gold);border-radius:999px;padding:8px 24px;box-shadow:var(--shadow)}
   .allbtn:hover{background:var(--gold-ghost)}
 
-  .todo{background:var(--surface);border-radius:22px;padding:18px 24px;box-shadow:var(--shadow);border-top:4px solid var(--warn)}
-  .todo h2{font-size:19px;color:var(--warn);margin-bottom:6px}
-  .todo.done{border-top-color:var(--ok)} .todo.done h2{color:var(--ok)}
-  .todo ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:2px}
 
   .search{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
   .search label{font-weight:700;display:flex;align-items:center;gap:6px;color:var(--gold-deep)}
@@ -222,7 +218,7 @@
     .route{flex-direction:column}
   }
   /* 不斷字：姓名、標籤、航空公司各自整塊，只在塊與塊之間換行 */
-  .nw,.pill,.chip,.ptrip,.pname,.legend span,.carrier-h>*,.bp-air,.bp-lab,.bp-zh,.bp-term,.trip-head h1 span,.todo b,.search label,.stop b,.pick .nm,.pick .sb{white-space:nowrap}
+  .nw,.pill,.chip,.ptrip,.pname,.legend span,.carrier-h>*,.bp-air,.bp-lab,.bp-zh,.bp-term,.trip-head h1 span,.search label,.stop b,.pick .nm,.pick .sb{white-space:nowrap}
   @media (max-width:520px){
     .bp-head .en{display:none}
     .bp-head{padding:7px 12px}
@@ -246,7 +242,6 @@
     .pick .ct{font-size:40px}
     .pick-bot{padding:12px 14px 14px}
     .pick .go{font-size:16px;padding:2px 12px}
-    .todo{padding:16px 18px}
   }
   @media (prefers-reduced-motion:reduce){ .pick{transition:none} }
 </style>
@@ -357,9 +352,6 @@
         '<span class="pick-bot"><span class="dt">' + nw(t.dates) + '</span><span class="go">看名單 ›</span></span></a>';
     }).join('') + '</div>';
     h += '<a class="allbtn" href="#all">看全部 ' + total + ' 人總名單 ›</a>';
-    h += '<section class="todo done"><h2>✅ 班機都有了</h2><ul>' +
-      '<li>高雄 ' + PEOPLE.khh.length + ' 人搭長榮 BR706／BR705（含王人美個別票，同一班）</li>' +
-      '<li>桃園 ' + PEOPLE.tpe.length + ' 人搭長榮 BR722／BR721</li></ul></section>';
     h += '<p class="foot">資料取自試算表「機票+行程」與長榮行程單，整理於 2026/11/04</p>';
     app.innerHTML = h;
     var q = document.getElementById('q'), res = document.getElementById('res');
