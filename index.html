@@ -11,7 +11,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap">
 <style>
-  /* 版面（沿用 2027 巴黎瑞士查詢）：首頁＝圓形主視覺 → 找人 → 三團彩色卡 → 待辦；點進一團＝漸層團頭 → 總名單表 → 班次（登機證＋同行組） */
+  /* 版面（沿用 2027 巴黎瑞士查詢）：首頁＝主視覺 → 找人 → 兩團彩色卡（左高雄、右桃園）→ 已完成；點進一團＝漸層團頭 → 機票（登機證）→ 名單 */
   :root{
     --bg:#f7f1e8; --bg-2:#efe5d6; --surface:#ffffff; --surface-2:#fbf7f1; --fg:#2f2a26; --muted:#7a6f66; --line:#e8dfd2;
     --khh:#9a2f3c; --khh-soft:#f8e8ea; --tpe:#245d8a; --tpe-soft:#e7eff7; --self:#8d6c2c; --self-soft:#f6eedd;
@@ -116,9 +116,6 @@
   .pname{font-family:var(--display);font-size:34px;font-weight:700;line-height:1.2;letter-spacing:.08em}
   .person-h .chip{font-size:18px;padding:1px 12px;background:var(--cs)}
   .ptrip{color:var(--muted);font-size:17px}
-  .mates{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:18px}
-  .mates b{font-size:15px;color:var(--muted);font-weight:700;letter-spacing:.06em}
-  .mates span{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:1px 12px;font-weight:700;white-space:nowrap}
   .pick-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
   .pick-names button{font:inherit;text-align:left;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--fg);cursor:pointer;display:flex;flex-direction:column}
   .pick-names button:hover{border-color:var(--khh)}
@@ -150,10 +147,8 @@
   tr:last-child td{border-bottom:0}
   td.no{color:var(--muted);font-variant-numeric:tabular-nums;width:3em}
   td.nm{font-size:20px;font-weight:700}
-  td.grp{color:var(--muted);font-size:16px}
   td .chip{font-size:15px}
   tbody tr td{background:var(--cs, transparent)}
-  tr.newgrp td{border-top:2px solid var(--line)}
   tr.hit td{box-shadow:inset 0 0 0 9999px var(--gold-ghost)}
   .pill{font-size:14px;border-radius:6px;padding:1px 8px}
   .pill.bad{color:var(--warn);background:var(--warn-soft);font-weight:700}
@@ -215,15 +210,6 @@
     .bp-cell:nth-child(5){grid-column:1 / -1;border-bottom:0}
   }
 
-  /* 同行組：一組一張小卡 */
-  .grps{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-  .grp-card{background:var(--cs);border:1.5px solid var(--c);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:6px}
-  .grp-card.hit{box-shadow:0 0 0 3px var(--gold)}
-  .grp-k{display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:var(--c);letter-spacing:.06em}
-  .grp-n{display:flex;flex-wrap:wrap;gap:6px}
-  .grp-n span{background:var(--surface);border-radius:8px;padding:2px 10px;font-size:20px;font-weight:700;white-space:nowrap}
-  .grp-n span.hit{background:var(--gold);color:#fff}
-
   .chip{font-size:16px;font-weight:700;color:var(--c);border:1.5px solid var(--c);border-radius:8px;padding:0 10px;white-space:nowrap}
   .count{font-weight:700;font-variant-numeric:tabular-nums}
   .note{color:var(--muted);font-size:15px}
@@ -248,7 +234,6 @@
     .bp-cell{padding:7px 10px 8px}
     .bp-v{font-size:18px}
     .carrier,.search-box{padding:14px}
-    .grps{grid-template-columns:1fr}
     .en-title{letter-spacing:.14em;font-size:11px}
     .trip-head{padding:18px}
     .trip-head h1{font-size:23px}
@@ -294,23 +279,21 @@
     tpe:{ label:'團體票', cls:'t-tpe' },
     indiv:{ label:'個別票', cls:'t-indiv' }
   };
-  // 同行組（照使用者給的名單分組，一行一組）
-  var GROUPS = {
-    khh:[['林孝恩','劉蘭瑛'],['湯雅帆','劉倖吟'],['陳淑慧','莊政翰','孫艾伶'],['林欣儀','呂建輝'],['張愷芳','詹秀鑾'],
-         ['呂蕙華','陳秀真'],['許怡節','邱進榮'],['林國智','謝麗華'],['戴淑珍','陳振霆'],['王俐涵','林偉龍'],['陳乃甄'],['王人美']],
-    tpe:[['陳金儒','辜寶雪','廖釗儷']]
+  // 名單（順序照使用者給的名單，同行的人排在一起）
+  var NAMES = {
+    khh:['林孝恩','劉蘭瑛','湯雅帆','劉倖吟','陳淑慧','莊政翰','孫艾伶','林欣儀','呂建輝','張愷芳','詹秀鑾',
+         '呂蕙華','陳秀真','許怡節','邱進榮','林國智','謝麗華','戴淑珍','陳振霆','王俐涵','林偉龍','陳乃甄','王人美'],
+    tpe:['陳金儒','辜寶雪','廖釗儷']
   };
   // 個別票：另外開票，但跟高雄團搭同一班
   var INDIV = ['王人美'];
   var ORDER = ['khh','tpe'];
-  // 攤平成 PEOPLE：[姓名, 票種, 組號（全團流水號）]
-  var PEOPLE = {}, g = 0;
-  ORDER.forEach(function(k){ PEOPLE[k] = []; GROUPS[k].forEach(function(grp){ g++; grp.forEach(function(n){ PEOPLE[k].push([n, INDIV.indexOf(n) !== -1 ? 'indiv' : k, g]); }); }); });
-  function groupOf(k, no){ var i = 0, hit; ORDER.forEach(function(t){ GROUPS[t].forEach(function(grp){ i++; if (i === no) hit = grp; }); }); return hit; }
+  // PEOPLE：[姓名, 票種]
+  var PEOPLE = {};
+  ORDER.forEach(function(k){ PEOPLE[k] = NAMES[k].map(function(n){ return [n, INDIV.indexOf(n) !== -1 ? 'indiv' : k]; }); });
 
   // ===== 工具 =====
   function nw(s){ return s.split('・').map(function(x){ return '<span class="nw">' + x + '</span>'; }).join('・'); }
-  function airTag(c){ return c.out ? '<span class="air ' + c.brand + '">' + c.short + '</span>' : '<span class="pill bad">航班待補</span>'; }
   function carrierOf(ticket){ for (var k in CARRIERS) if (CARRIERS[k].tickets.indexOf(ticket) !== -1) return CARRIERS[k]; }
   var PLANE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>';
   var BG_PLANE = '<svg viewBox="0 0 200 80" aria-hidden="true"><path d="M188 40c0-2-3-3-6-3l-30 1-38-26c-2-1-5-1-7 0l-5 3 22 23-29 1-12-9c-1-1-3-1-4 0l-4 2 9 11-21 1c-2 0-3 1-3 3 0 2 1 3 3 3l21 1-9 11 4 2c1 1 3 1 4 0l12-9 29 1-22 23 5 3c2 1 5 1 7 0l38-26 30 1c3 0 6-1 6-3z"/></svg>';
@@ -353,15 +336,6 @@
     c.back.forEach(function(r){ h += pass(r, c, '<span class="en">RETURN · </span>回程', people); });
     return h + '</div>';
   }
-  function grpCards(k, focus){
-    var start = 0; ORDER.slice(0, ORDER.indexOf(k)).forEach(function(t){ start += GROUPS[t].length; });
-    var cls = TICKETS[k].cls;
-    return '<div class="grps">' + GROUPS[k].map(function(grp, i){
-      var on = focus && grp.indexOf(focus) !== -1;
-      return '<div class="grp-card ' + cls + (on ? ' hit' : '') + '"' + (on ? ' data-hit' : '') + '><div class="grp-k"><span>第 ' + (start + i + 1) + ' 組</span><span>' + grp.length + ' 人</span></div>' +
-        '<div class="grp-n">' + grp.map(function(n){ return '<span' + (n === focus ? ' class="hit"' : '') + '>' + n + '</span>'; }).join('') + '</div></div>';
-    }).join('') + '</div>';
-  }
   var app = document.getElementById('app');
   var total = ORDER.reduce(function(s,k){ return s + PEOPLE[k].length; }, 0);
 
@@ -374,7 +348,7 @@
       '<div class="trip-sub">公司活動 2/23～2/25，我們提早一天出發</div>' +
       '<img class="hero-img" src="hero.jpg" alt="上海外灘與東方明珠塔的水彩插畫" width="1800" height="600" onerror="this.remove()"></header>';
     h += '<section class="search-box"><div class="search"><label for="q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>找人</label><input id="q" type="search" placeholder="輸入姓名，例如：林孝恩" autocomplete="off"></div>' +
-      '<p class="hint">輸入姓名，就會顯示他的班機時間和同行的人。</p><div class="results" id="res" aria-live="polite"></div></section>';
+      '<p class="hint">輸入姓名，就會顯示他的機票。</p><div class="results" id="res" aria-live="polite"></div></section>';
     h += '<div class="picker">' + ORDER.map(function(k){
       var t = TRIPS[k];
       return '<a class="pick ' + t.cls + '" href="#' + k + '">' +
@@ -402,26 +376,24 @@
       found.forEach(function(f){
         var b = document.createElement('button'); b.type = 'button';
         var nm = document.createElement('b'); nm.textContent = f[1][0];
-        var s = document.createElement('span'); s.textContent = TRIPS[f[0]].name + '・第 ' + f[1][2] + ' 組';
+        var s = document.createElement('span'); s.textContent = TRIPS[f[0]].name + '・' + TICKETS[f[1][1]].label;
         b.appendChild(nm); b.appendChild(s);
         b.addEventListener('click', function(){ q.value = f[1][0]; showPerson(f); });
         list.appendChild(b);
       });
       res.appendChild(list);
     });
-    // 個人卡：姓名、票種、出發地、同行的人＋自己的登機證（乘客欄是本人）
+    // 個人卡：姓名、機票、出發地＋自己的登機證（乘客欄是本人）
     function showPerson(f){
       var k = f[0], p = f[1], t = TRIPS[k], tk = TICKETS[p[1]], c = carrierOf(p[1]);
-      var mates = groupOf(k, p[2]).filter(function(n){ return n !== p[0]; });
-      var h2 = '<div class="person"><div class="person-h"><span class="pname">' + p[0] + '</span><span class="chip ' + tk.cls + '">' + tk.label + '</span><span class="ptrip">第 ' + p[2] + ' 組</span></div>';
-      if (mates.length) h2 += '<div class="mates"><b>同行</b>' + mates.map(function(n){ return '<span>' + n + '</span>'; }).join('') + '</div>';
-      h2 += c.out ? passes(c, p[0]) : '<p class="warn-note">' + c.pending + '</p>';
+      var h2 = '<div class="person"><div class="person-h"><span class="pname">' + p[0] + '</span><span class="chip ' + tk.cls + '">' + tk.label + '</span><span class="ptrip">' + t.name + '</span></div>';
+      h2 += passes(c, p[0]);
       h2 += '<a class="back" href="#' + k + '/' + encodeURIComponent(p[0]) + '">看' + t.name + '完整名單 ›</a></div>';
       res.innerHTML = h2;
     }
   }
 
-  // ===== 團內頁：總名單 → 班次（登機證＋同行組） =====
+  // ===== 團內頁：機票（登機證）→ 名單（只列姓名＋機票，全團同班所以不重複列班次） =====
   function renderTrip(k, focus){
     var t = TRIPS[k], list = PEOPLE[k];
     var h = '<a class="back" href="#">‹ 回到首頁</a>';
@@ -429,25 +401,20 @@
     if (t.route) h += '<div class="route">' + t.route.map(function(r){ return '<div class="stop"><div><b>' + r[0] + '</b>' + r[1] + '</div></div>'; }).join('') + '</div>';
     h += '</div>';
 
-    // 1. 總名單
-    h += '<div class="step-h"><h2>總名單</h2><span class="note">' + list.length + ' 人・' + GROUPS[k].length + ' 組</span></div>';
-    h += '<div class="tblbox"><table><thead><tr><th>#</th><th>姓名</th><th>同行組</th><th>票種</th><th>班次</th></tr></thead><tbody>' +
-      list.map(function(p, i){
-        var tk = TICKETS[p[1]], first = i > 0 && list[i-1][2] !== p[2];
-        return '<tr class="' + tk.cls + (first ? ' newgrp' : '') + (p[0] === focus ? ' hit' : '') + '"' + (p[0] === focus ? ' data-hit' : '') + '><td class="no">' + (i+1) + '</td><td class="nm">' + p[0] + '</td><td class="grp">第 ' + p[2] + ' 組</td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + airTag(carrierOf(p[1])) + '</td></tr>';
-      }).join('') + '</tbody></table></div>';
-
-    // 2. 班次
-    h += '<div class="step-h"><h2>班次・去程＋回程</h2></div>';
+    // 1. 機票
+    h += '<div class="step-h"><h2>機票・去程＋回程</h2></div>';
     t.carriers.forEach(function(ck){
       var c = CARRIERS[ck];
-      h += '<section class="carrier"><div class="carrier-h"><span class="air ' + c.brand + '">' + c.name + '</span><span class="note">' + list.length + ' 人</span></div>';
-      h += c.out ? passes(c, list.length) : '<p class="warn-note">' + c.pending + '</p>';
-      h += '</section>';
+      h += '<section class="carrier"><div class="carrier-h"><span class="air ' + c.brand + '">' + c.name + '</span><span class="note">' + list.length + ' 人</span></div>' + passes(c, list.length) + '</section>';
     });
 
-    // 3. 同行組
-    h += '<div class="step-h"><h2>同行組</h2><span class="note">照報名時一起的人分組</span></div>' + grpCards(k, focus);
+    // 2. 名單
+    h += '<div class="step-h"><h2>名單</h2><span class="note">' + list.length + ' 人</span></div>';
+    h += '<div class="tblbox"><table><thead><tr><th>#</th><th>姓名</th><th>機票</th></tr></thead><tbody>' +
+      list.map(function(p, i){
+        var tk = TICKETS[p[1]];
+        return '<tr class="' + tk.cls + (p[0] === focus ? ' hit' : '') + '"' + (p[0] === focus ? ' data-hit' : '') + '><td class="no">' + (i+1) + '</td><td class="nm">' + p[0] + '</td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td></tr>';
+      }).join('') + '</tbody></table></div>';
     h += '<a class="back" href="#">‹ 回到首頁</a>';
     app.innerHTML = h;
     var hit = app.querySelector('[data-hit]');
@@ -459,13 +426,12 @@
     var h = '<a class="back" href="#">‹ 回到首頁</a>';
     h += '<div class="trip-head all"><div><h1>全部總名單</h1><p>' + ORDER.map(function(k){ return TRIPS[k].name + ' ' + PEOPLE[k].length; }).join('・') + '，共 ' + total + ' 人</p></div></div>';
     h += '<div class="legend">' + ORDER.map(function(k){ return '<span class="' + TICKETS[k].cls + '">' + TRIPS[k].name + '<small>' + PEOPLE[k].length + ' 人</small></span>'; }).join('') + '</div>';
-    h += '<div class="tblbox"><table><thead><tr><th>#</th><th>姓名</th><th>出發</th><th>同行組</th><th>班次</th></tr></thead><tbody>';
-    var i = 0, prev = 0;
+    h += '<div class="tblbox"><table><thead><tr><th>#</th><th>姓名</th><th>出發</th><th>機票</th></tr></thead><tbody>';
+    var i = 0;
     ORDER.forEach(function(k){
       PEOPLE[k].forEach(function(p){
         var tk = TICKETS[p[1]];
-        h += '<tr class="' + tk.cls + (i > 0 && p[2] !== prev ? ' newgrp' : '') + '"><td class="no">' + (++i) + '</td><td class="nm">' + p[0] + '</td><td><a href="#' + k + '">' + TRIPS[k].name + '</a></td><td class="grp">第 ' + p[2] + ' 組</td><td>' + airTag(carrierOf(p[1])) + '</td></tr>';
-        prev = p[2];
+        h += '<tr class="' + tk.cls + '"><td class="no">' + (++i) + '</td><td class="nm">' + p[0] + '</td><td><a href="#' + k + '">' + TRIPS[k].name + '</a></td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td></tr>';
       });
     });
     h += '</tbody></table></div><a class="back" href="#">‹ 回到首頁</a>';
