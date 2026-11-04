@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+<title>2027 上海創心之旅</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap">
+<style>
+  /* 版面（沿用 2027 巴黎瑞士查詢）：首頁＝圓形主視覺 → 找人 → 三團彩色卡 → 待辦；點進一團＝漸層團頭 → 總名單表 → 班次（登機證＋同行組） */
+  :root{
+    --bg:#f7f1e8; --bg-2:#efe5d6; --surface:#ffffff; --surface-2:#fbf7f1; --fg:#2f2a26; --muted:#7a6f66; --line:#e8dfd2;
+    --khh:#9a2f3c; --khh-soft:#f8e8ea; --tpe:#245d8a; --tpe-soft:#e7eff7; --self:#8d6c2c; --self-soft:#f6eedd;
+    --gold:#b8934a; --gold-deep:#8d6c2c; --gold-ghost:rgba(184,147,74,.16);
+    /* 長榮航空主色（色帶用 --br，文字用 -ink） */
+    --br:#00704a; --br-ink:#00704a;
+    --ok:#16704f; --ok-soft:#e3f3ec; --warn:#b42318; --warn-soft:#fdecea;
+    --s-khh:#f8e5e8; --s-tpe:#e2edf8; --s-indiv:#fdf0d6;
+    /* 彩色色帶（白字），兩種主題共用 */
+    --g-khh-1:#8a2433; --g-khh-2:#cf6874; --g-tpe-1:#24557f; --g-tpe-2:#5a93c3; --g-self-1:#7a5a24; --g-self-2:#c79a4c; --g-all-1:#5b4a2e; --g-all-2:#b8934a;
+    --shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 12px 36px rgba(60,50,45,.09);
+    --tint-1:rgba(207,104,116,.14); --tint-2:rgba(90,147,195,.14); --tint-3:rgba(184,147,74,.16);
+    --display:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+    --body:"Noto Sans TC","Microsoft JhengHei","PingFang TC",system-ui,sans-serif;
+    --num:"Inter","Noto Sans TC",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --bg:#17161a; --bg-2:#1d1b20; --surface:#232127; --surface-2:#2a282f; --fg:#ece7e1; --muted:#b0a69c; --line:#3a3640;
+    --gold:#d9b46a; --gold-deep:#e6c788; --gold-ghost:rgba(217,180,106,.16);
+    --shadow:0 12px 36px rgba(0,0,0,.35); --tint-1:rgba(207,104,116,.10); --tint-2:rgba(90,147,195,.10); --tint-3:rgba(217,180,106,.10);
+    --khh:#ec8f9b; --khh-soft:#3a2229; --tpe:#79b2df; --tpe-soft:#1d2d3c; --self:#e5b45a; --self-soft:#382b15; --br-ink:#4cc79a;
+    --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c;
+    --s-khh:#3a2229; --s-tpe:#1c2c3c; --s-indiv:#382b15; color-scheme:dark }}
+  :root[data-theme="dark"]{
+    --bg:#17161a; --bg-2:#1d1b20; --surface:#232127; --surface-2:#2a282f; --fg:#ece7e1; --muted:#b0a69c; --line:#3a3640;
+    --gold:#d9b46a; --gold-deep:#e6c788; --gold-ghost:rgba(217,180,106,.16);
+    --shadow:0 12px 36px rgba(0,0,0,.35); --tint-1:rgba(207,104,116,.10); --tint-2:rgba(90,147,195,.10); --tint-3:rgba(217,180,106,.10);
+    --khh:#ec8f9b; --khh-soft:#3a2229; --tpe:#79b2df; --tpe-soft:#1d2d3c; --self:#e5b45a; --self-soft:#382b15; --br-ink:#4cc79a;
+    --ok:#5cc79c; --ok-soft:#1b3329; --warn:#ff8a7e; --warn-soft:#3d1f1c;
+    --s-khh:#3a2229; --s-tpe:#1c2c3c; --s-indiv:#382b15; color-scheme:dark }
+
+  *{box-sizing:border-box}
+  body{color:var(--fg);font:18px/1.65 var(--body);-webkit-font-smoothing:antialiased;min-height:100%;
+    background:
+      radial-gradient(50% 40% at 12% 0%, var(--tint-1), transparent 65%),
+      radial-gradient(44% 36% at 100% 20%, var(--tint-2), transparent 65%),
+      radial-gradient(44% 36% at 50% 100%, var(--tint-3), transparent 65%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    background-color:var(--bg);background-attachment:fixed}
+  .wrap{max-width:1080px;margin:0 auto;padding-block:28px 72px;
+    padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+    display:flex;flex-direction:column;gap:26px}
+  h1,h2{font-family:var(--display);text-wrap:balance;margin:0;font-weight:700}
+  h1{font-size:32px;line-height:1.25}
+  h2{font-size:24px}
+  a{color:inherit}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* 主視覺（照巴黎版）：藥丸標籤 → 細字大標 → 英文小字 → 日期 → 水彩橫幅 */
+  .hero{text-align:center;padding:18px 8px 0;display:flex;flex-direction:column;align-items:center}
+  .event{display:inline-block;padding:6px 20px;border-radius:999px;background:linear-gradient(100deg,var(--g-all-2),#a67a35);color:#fff;font-size:14px;font-weight:700;letter-spacing:.16em;box-shadow:0 6px 18px rgba(141,108,44,.24)}
+  .main-title{margin:18px 0 6px;font-size:clamp(40px,8vw,64px);font-weight:300;letter-spacing:.2em;line-height:1.15;padding-left:.2em}
+  .main-title span{white-space:nowrap}
+  .main-title .a{font-weight:500;color:var(--khh)} .main-title .p{font-weight:500;color:var(--tpe)} .main-title .dot{color:var(--gold)}
+  .en-title{font-family:var(--num);font-size:12px;font-weight:600;letter-spacing:.32em;color:var(--muted)}
+  .trip-date{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:6px 18px;border-radius:999px;background:var(--surface);border:1px solid var(--gold);font-family:var(--num);font-size:15px;font-weight:700;letter-spacing:.06em;color:var(--gold-deep)}
+  .trip-sub{margin-top:8px;font-size:15px;color:var(--muted)}
+  /* 主視覺插畫（GPT 水彩圖 hero.jpg，1800x600）：四邊淡出融進背景；還沒放圖時自動隱藏 */
+  .hero-img{display:block;width:100%;max-width:1080px;height:auto;aspect-ratio:3 / 1;margin:18px auto 0;
+    -webkit-mask-image:radial-gradient(ellipse 74% 80% at 50% 50%,#000 70%,transparent 100%);
+    mask-image:radial-gradient(ellipse 74% 80% at 50% 50%,#000 70%,transparent 100%)}
+
+  /* 首頁：選團 */
+  .picker{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .pick{--g1:var(--g-khh-1);--g2:var(--g-khh-2);--c:var(--khh);display:flex;flex-direction:column;text-decoration:none;background:var(--surface);
+    border-radius:22px;overflow:hidden;box-shadow:var(--shadow);transition:transform .25s, box-shadow .25s}
+  .pick:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(60,50,45,.16)}
+  .pick.tpe{--g1:var(--g-tpe-1);--g2:var(--g-tpe-2);--c:var(--tpe)} .pick.self{--g1:var(--g-self-1);--g2:var(--g-self-2);--c:var(--self)}
+  .pick-top{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;padding:20px 22px 18px;color:#fff;background:linear-gradient(135deg,var(--g1),var(--g2));overflow:hidden}
+  .pick-top svg{position:absolute;right:-6px;bottom:-4px;width:120px;height:auto;opacity:.18;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .pick .nm{display:block;font-size:32px;font-weight:700;line-height:1.2;letter-spacing:.08em}
+  .pick .sb{display:block;font-size:16px;opacity:.9;letter-spacing:.04em}
+  .pick .ct{position:relative;font-family:var(--num);font-size:48px;font-weight:800;line-height:1}
+  .pick .ct small{font-family:var(--body);font-size:17px;font-weight:500;margin-left:3px}
+  .pick-bot{display:flex;flex-direction:column;gap:10px;padding:14px 22px 18px}
+  .pick .dt{font-size:15px;color:var(--muted)}
+  .pick .go{align-self:flex-start;color:var(--c);font-weight:700;font-size:17px;border:1.5px solid var(--c);border-radius:999px;padding:3px 16px}
+  .pick:hover .go{background:var(--c);color:var(--surface)}
+  .allbtn{align-self:center;text-decoration:none;font-weight:700;color:var(--gold-deep);background:var(--surface);border:1.5px solid var(--gold);border-radius:999px;padding:8px 24px;box-shadow:var(--shadow)}
+  .allbtn:hover{background:var(--gold-ghost)}
+
+  .todo{background:var(--surface);border-radius:22px;padding:18px 24px;box-shadow:var(--shadow);border-top:4px solid var(--warn)}
+  .todo h2{font-size:19px;color:var(--warn);margin-bottom:6px}
+  .todo.done{border-top-color:var(--ok)} .todo.done h2{color:var(--ok)}
+  .todo ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:2px}
+
+  .search{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .search label{font-weight:700;display:flex;align-items:center;gap:6px;color:var(--gold-deep)}
+  .search label svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
+  .search input{flex:1;min-width:0;font:inherit;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+  .search-box{background:var(--surface);border-radius:22px;padding:20px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+  .search-box .search label{font-size:21px;letter-spacing:.1em}
+  .search-box .search input{font-size:22px;max-width:460px;padding:10px 18px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface-2)}
+  .search-box .search input:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 4px var(--gold-ghost)}
+  .hint{margin:0;color:var(--muted);font-size:15px}
+  .results:empty{display:none}
+  .results{display:flex;flex-direction:column;gap:6px}
+  .results p{margin:0;color:var(--muted)}
+  .person{display:flex;flex-direction:column;gap:12px}
+  .person-h{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .pname{font-family:var(--display);font-size:34px;font-weight:700;line-height:1.2;letter-spacing:.08em}
+  .person-h .chip{font-size:18px;padding:1px 12px;background:var(--cs)}
+  .ptrip{color:var(--muted);font-size:17px}
+  .mates{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:18px}
+  .mates b{font-size:15px;color:var(--muted);font-weight:700;letter-spacing:.06em}
+  .mates span{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:1px 12px;font-weight:700;white-space:nowrap}
+  .pick-names{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+  .pick-names button{font:inherit;text-align:left;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--fg);cursor:pointer;display:flex;flex-direction:column}
+  .pick-names button:hover{border-color:var(--khh)}
+  .pick-names b{font-size:20px}
+  .pick-names span{font-size:14px;color:var(--muted)}
+
+  /* 團內頁 */
+  .back{align-self:flex-start;text-decoration:none;font-weight:700;color:var(--muted);font-size:17px}
+  .back:hover{color:var(--fg)}
+  .trip-head{--g1:var(--g-khh-1);--g2:var(--g-khh-2);border-radius:22px;padding:22px 26px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;
+    color:#fff;background:linear-gradient(135deg,var(--g1),var(--g2));box-shadow:var(--shadow)}
+  .trip-head.tpe{--g1:var(--g-tpe-1);--g2:var(--g-tpe-2)} .trip-head.self{--g1:var(--g-self-1);--g2:var(--g-self-2)} .trip-head.all{--g1:var(--g-all-1);--g2:var(--g-all-2)}
+  .trip-head h1{letter-spacing:.06em}
+  .trip-head p{margin:2px 0 0;opacity:.88;font-size:16px}
+  .trip-head .count{font-family:var(--num);font-size:30px;font-weight:800}
+  .route{display:flex;flex-wrap:wrap;gap:8px;font-size:16px;margin-top:14px;width:100%}
+  .stop{display:flex;align-items:flex-start;background:rgba(255,255,255,.16);border-radius:12px;padding:6px 12px}
+  .stop b{display:block;font-size:14px;opacity:.85;font-family:var(--num);font-weight:700}
+  .stop span{display:block;font-size:14px;opacity:.85}
+
+  .step-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-bottom:2px}
+  .step-h h2{position:relative;padding-left:14px;letter-spacing:.06em}
+  .step-h h2::before{content:"";position:absolute;left:0;top:.2em;bottom:.2em;width:5px;border-radius:3px;background:var(--gold)}
+  .step-h .note{font-size:16px}
+  .tblbox{overflow-x:auto;background:var(--surface);border-radius:18px;box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:18px}
+  th,td{text-align:left;padding:8px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{font-size:15px;color:var(--muted);font-weight:700;background:var(--surface-2);letter-spacing:.04em}
+  tr:last-child td{border-bottom:0}
+  td.no{color:var(--muted);font-variant-numeric:tabular-nums;width:3em}
+  td.nm{font-size:20px;font-weight:700}
+  td.grp{color:var(--muted);font-size:16px}
+  td .chip{font-size:15px}
+  tbody tr td{background:var(--cs, transparent)}
+  tr.newgrp td{border-top:2px solid var(--line)}
+  tr.hit td{box-shadow:inset 0 0 0 9999px var(--gold-ghost)}
+  .pill{font-size:14px;border-radius:6px;padding:1px 8px}
+  .pill.bad{color:var(--warn);background:var(--warn-soft);font-weight:700}
+  .legend{display:flex;flex-wrap:wrap;gap:8px}
+  .legend span{background:var(--cs);color:var(--c);border:1.5px solid var(--c);border-radius:8px;padding:2px 12px;font-size:16px;font-weight:700}
+  .legend span small{font-weight:400;color:var(--fg);margin-left:4px}
+
+  .carrier{background:var(--surface);border-radius:22px;padding:20px 22px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+  .carrier-h{font-weight:700;font-size:20px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  /* 登機證（沿用日本橫濱／泰國／巴黎查詢系統的橫式登機證）：左主票面、右票根 */
+  .passes{display:flex;flex-direction:column;gap:14px}
+  .bp{--acc:var(--br);--acc-ink:var(--br-ink);position:relative;display:grid;grid-template-columns:1fr 210px;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(40,30,24,.06)}
+  .air{font-weight:600} .air.br{color:var(--br-ink)}
+  .air.br::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:.05em;background:currentColor}
+  .bp-main{position:relative;overflow:hidden;min-width:0}
+  .bp-bg{position:absolute;top:58%;left:50%;width:300px;transform:translate(-50%,-50%);opacity:.07;color:var(--acc-ink);pointer-events:none}
+  .bp-bg svg{display:block;width:100%;height:auto;fill:currentColor}
+  .bp-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 16px;background:var(--acc);color:#fff}
+  .bp-air{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;letter-spacing:.04em}
+  .bp-air svg{width:15px;height:15px;fill:currentColor}
+  .bp-lab{font-size:12px;font-weight:700;letter-spacing:.2em}
+  .bp-route{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:18px 20px 14px}
+  .bp-port{display:flex;flex-direction:column;min-width:0}
+  .bp-port.r{align-items:flex-end;text-align:right}
+  .bp-code{font-family:var(--num);font-size:50px;font-weight:700;letter-spacing:.03em;line-height:1}
+  .bp-v,.bp-stub-route,.bp-air,.bp-lab,.bp-k{font-family:var(--num)}
+  .bp-zh{font-size:20px;font-weight:700;margin-top:8px;letter-spacing:.06em}
+  .bp-term{font-size:15px;color:var(--acc-ink);font-weight:700}
+  .bp-en{font-size:12px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+  .bp-midw{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .bp-dur{font-size:13px;color:var(--muted);white-space:nowrap}
+  .bp-mid{display:flex;align-items:center;min-width:80px;width:100%;color:var(--acc-ink)}
+  .bp-mid svg{width:24px;height:24px;fill:currentColor;flex-shrink:0;transform:rotate(90deg)}
+  .bp-mid::before,.bp-mid::after{content:"";flex:1;height:2px;margin:0 4px;background:repeating-linear-gradient(90deg,var(--acc-ink) 0 4px,transparent 4px 8px);opacity:.5}
+  .bp-info{position:relative;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line)}
+  .bp-cell{padding:8px 12px 10px;border-right:1px solid var(--line);min-width:0}
+  .bp-cell:last-child{border-right:0}
+  .bp-k{font-size:11px;color:var(--muted);letter-spacing:.14em;line-height:1.3;margin-bottom:4px}
+  .bp-v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2;white-space:nowrap}
+  .bp-stub{position:relative;padding:10px 14px;display:flex;flex-direction:column;gap:6px;border-left:1.5px dashed var(--line);background:linear-gradient(180deg,var(--surface-2),var(--surface) 70%)}
+  .bp-stub::before,.bp-stub::after{content:"";position:absolute;left:-9px;width:16px;height:16px;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+  .bp-stub::before{top:-8px} .bp-stub::after{bottom:-8px}
+  .bp-stub-lab{font-size:11px;font-weight:700;letter-spacing:.26em;color:var(--acc-ink);text-align:right;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .bp-stub-route{font-size:28px;font-weight:800;letter-spacing:.02em;line-height:1}
+  .bp-stub-route span{color:var(--acc-ink);font-size:18px;margin:0 4px}
+  .bp-stub-city{font-size:13px;color:var(--muted)}
+  .bp-stub-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .bp-stub-grid .bp-v{font-size:16px}
+  .bp-bar{margin-top:auto;opacity:.75}
+  .bp-bar svg{display:block;width:100%;height:24px;fill:var(--fg)}
+  @media (max-width:760px){
+    .bp{grid-template-columns:1fr}
+    .bp-stub{display:none}
+    .bp-code{font-size:44px}
+    .bp-route{padding:18px 16px 14px}
+    .bp-info{grid-template-columns:1fr 1fr}
+    .bp-cell{border-bottom:1px solid var(--line)}
+    .bp-cell:nth-child(2n){border-right:0}
+    .bp-cell:nth-child(5){grid-column:1 / -1;border-bottom:0}
+  }
+
+  /* 同行組：一組一張小卡 */
+  .grps{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+  .grp-card{background:var(--cs);border:1.5px solid var(--c);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+  .grp-card.hit{box-shadow:0 0 0 3px var(--gold)}
+  .grp-k{display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:var(--c);letter-spacing:.06em}
+  .grp-n{display:flex;flex-wrap:wrap;gap:6px}
+  .grp-n span{background:var(--surface);border-radius:8px;padding:2px 10px;font-size:20px;font-weight:700;white-space:nowrap}
+  .grp-n span.hit{background:var(--gold);color:#fff}
+
+  .chip{font-size:16px;font-weight:700;color:var(--c);border:1.5px solid var(--c);border-radius:8px;padding:0 10px;white-space:nowrap}
+  .count{font-weight:700;font-variant-numeric:tabular-nums}
+  .note{color:var(--muted);font-size:15px}
+  .warn-note{color:var(--warn);font-size:16px;font-weight:700}
+  .t-khh{--c:var(--khh);--cs:var(--s-khh)} .t-tpe{--c:var(--tpe);--cs:var(--s-tpe)} .t-indiv{--c:var(--self);--cs:var(--s-indiv)}
+
+  .foot{color:var(--muted);font-size:14px}
+  @media (max-width:760px){
+    h1{font-size:26px}
+    .route{flex-direction:column}
+  }
+  /* 不斷字：姓名、標籤、航空公司各自整塊，只在塊與塊之間換行 */
+  .nw,.pill,.chip,.ptrip,.pname,.legend span,.carrier-h>*,.bp-air,.bp-lab,.bp-zh,.bp-term,.trip-head h1 span,.todo b,.search label,.stop b,.pick .nm,.pick .sb{white-space:nowrap}
+  @media (max-width:520px){
+    .bp-head .en{display:none}
+    .bp-head{padding:7px 12px}
+    .bp-code{font-size:36px}
+    .bp-zh{font-size:15px;margin-top:6px}
+    .bp-term{font-size:13px}
+    .bp-mid{min-width:40px}
+    .bp-route{padding:14px 12px 12px;gap:6px}
+    .bp-cell{padding:7px 10px 8px}
+    .bp-v{font-size:18px}
+    .carrier,.search-box{padding:14px}
+    .grps{grid-template-columns:1fr}
+    .en-title{letter-spacing:.14em;font-size:11px}
+    .trip-head{padding:18px}
+    .trip-head h1{font-size:23px}
+    .pick .dt{font-size:14px}
+    /* 手機也維持左高雄、右桃園並排：團卡改直式排 */
+    .picker{gap:10px}
+    .pick-top{flex-direction:column;align-items:flex-start;gap:6px;padding:16px 14px 14px}
+    .pick .nm{font-size:24px;letter-spacing:.04em}
+    .pick .sb{font-size:14px}
+    .pick .ct{font-size:40px}
+    .pick-bot{padding:12px 14px 14px}
+    .pick .go{font-size:16px;padding:2px 12px}
+    .todo{padding:16px 18px}
+  }
+  @media (prefers-reduced-motion:reduce){ .pick{transition:none} }
+</style>
+</head>
+<body>
+
+
+<div class="wrap" id="app"></div>
+
+<script>
+(function(){
+  // ===== 資料（取自試算表「機票+行程」＋使用者給的名單與長榮行程單，2026/11/04） =====
+  // 公司活動 2/23～2/25，我們提早一天 2/22 出發
+  var ROUTE = [['2/22（一）','提早一天出發'],['2/22 晚上','抵達上海浦東'],['2/23～2/25','公司活動'],['2/25（四）晚上','回台灣']];
+  var TRIPS = {
+    khh:{ name:'高雄出發', sub:'長榮・高雄來回', dates:'2/22 出發・2/25 回台', cls:'', route:ROUTE, carriers:['brK'] },
+    tpe:{ name:'桃園出發', sub:'長榮・桃園來回', dates:'2/22 出發・2/25 回台', cls:'tpe', route:ROUTE, carriers:['brT'] }
+  };
+  // 航班：[航班, 日期, 「城市 代號 時間 → 城市 代號 時間」, 出發航廈, 抵達航廈, 飛行時間]
+  var CARRIERS = {
+    brK:{ name:'長榮航空・高雄小港機場', brand:'br', airline:'<span class="en">EVA AIR </span>長榮航空', short:'長榮 BR706／BR705',
+      out:[['BR706','2/22（一）','高雄 KHH 16:50 → 上海 PVG 19:05','國際航廈','第二航廈','2 小時 15 分']],
+      back:[['BR705','2/25（四）','上海 PVG 20:05 → 高雄 KHH 22:20','第二航廈','國際航廈','2 小時 15 分']], tickets:['khh','indiv'] },
+    brT:{ name:'長榮航空・桃園機場', brand:'br', airline:'<span class="en">EVA AIR </span>長榮航空', short:'長榮 BR722／BR721',
+      out:[['BR722','2/22（一）','桃園 TPE 16:30 → 上海 PVG 18:25','第二航廈','第二航廈','1 小時 55 分']],
+      back:[['BR721','2/25（四）','上海 PVG 20:10 → 桃園 TPE 22:10','第二航廈','第二航廈','2 小時']], tickets:['tpe'] }
+  };
+  var TICKETS = {
+    khh:{ label:'團體票', cls:'t-khh' },
+    tpe:{ label:'團體票', cls:'t-tpe' },
+    indiv:{ label:'個別票', cls:'t-indiv' }
+  };
+  // 同行組（照使用者給的名單分組，一行一組）
+  var GROUPS = {
+    khh:[['林孝恩','劉蘭瑛'],['湯雅帆','劉倖吟'],['陳淑慧','莊政翰','孫艾伶'],['林欣儀','呂建輝'],['張愷芳','詹秀鑾'],
+         ['呂蕙華','陳秀真'],['許怡節','邱進榮'],['林國智','謝麗華'],['戴淑珍','陳振霆'],['王俐涵','林偉龍'],['陳乃甄'],['王人美']],
+    tpe:[['陳金儒','辜寶雪','廖釗儷']]
+  };
+  // 個別票：另外開票，但跟高雄團搭同一班
+  var INDIV = ['王人美'];
+  var ORDER = ['khh','tpe'];
+  // 攤平成 PEOPLE：[姓名, 票種, 組號（全團流水號）]
+  var PEOPLE = {}, g = 0;
+  ORDER.forEach(function(k){ PEOPLE[k] = []; GROUPS[k].forEach(function(grp){ g++; grp.forEach(function(n){ PEOPLE[k].push([n, INDIV.indexOf(n) !== -1 ? 'indiv' : k, g]); }); }); });
+  function groupOf(k, no){ var i = 0, hit; ORDER.forEach(function(t){ GROUPS[t].forEach(function(grp){ i++; if (i === no) hit = grp; }); }); return hit; }
+
+  // ===== 工具 =====
+  function nw(s){ return s.split('・').map(function(x){ return '<span class="nw">' + x + '</span>'; }).join('・'); }
+  function airTag(c){ return c.out ? '<span class="air ' + c.brand + '">' + c.short + '</span>' : '<span class="pill bad">航班待補</span>'; }
+  function carrierOf(ticket){ for (var k in CARRIERS) if (CARRIERS[k].tickets.indexOf(ticket) !== -1) return CARRIERS[k]; }
+  var PLANE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>';
+  var BG_PLANE = '<svg viewBox="0 0 200 80" aria-hidden="true"><path d="M188 40c0-2-3-3-6-3l-30 1-38-26c-2-1-5-1-7 0l-5 3 22 23-29 1-12-9c-1-1-3-1-4 0l-4 2 9 11-21 1c-2 0-3 1-3 3 0 2 1 3 3 3l21 1-9 11 4 2c1 1 3 1 4 0l12-9 29 1-22 23 5 3c2 1 5 1 7 0l38-26 30 1c3 0 6-1 6-3z"/></svg>';
+  var BAR = (function(){ var w = [2,1,3,1,2.5,1,4,1,2,3,1,2,1,3,2,1,4,1,2.5,1,3,2,1,2,3,1,4,1,2,3,1,2.5,1,3,1,2,4,1,3], x = 0, s = '';
+    w.forEach(function(v, i){ if (i % 2 === 0) s += '<rect x="' + x + '" y="0" width="' + v + '" height="24"/>'; x += v + 1.2; });
+    return '<svg viewBox="0 0 ' + x + ' 24" preserveAspectRatio="none" aria-hidden="true">' + s + '</svg>'; })();
+  // 三團卡右下角的浮水印圖示：東方明珠塔、飛機、票券
+  var ICON = {
+    khh:'<svg viewBox="0 0 120 80" aria-hidden="true"><path d="M60 2 V16 M60 22 V48 M60 56 V78 M48 78 L56 54 M72 78 L64 54"/><circle cx="60" cy="19" r="4"/><circle cx="60" cy="52" r="7"/></svg>',
+    tpe:'<svg viewBox="0 0 120 80" aria-hidden="true"><path d="M18 52 L102 22 M50 40 L40 18 L52 14 L70 34 M62 46 L68 70 L78 66 L84 38 M18 52 L10 44"/></svg>'
+  };
+  var AIRPORT_ZH = { KHH:'高雄小港機場', TPE:'桃園機場', PVG:'上海浦東機場' };
+  var CITY_EN = { KHH:'Kaohsiung', TPE:'Taoyuan', PVG:'Shanghai Pudong' };
+  function pass(r, c, label, people){
+    var m = r[2].match(/^(\S+) (\w{3}) (\d\d:\d\d) → (\S+) (\w{3}) (\d\d:\d\d)$/);
+    var fromZh = AIRPORT_ZH[m[2]] || m[1], toZh = AIRPORT_ZH[m[5]] || m[4];
+    var fno = '<div class="bp-v">' + r[0] + '</div>';
+    function cell(k, v){ return '<div class="bp-cell"><div class="bp-k">' + k + '</div>' + v + '</div>'; }
+    return '<div class="bp ' + c.brand + '"><div class="bp-main"><div class="bp-bg">' + BG_PLANE + '</div>' +
+      '<div class="bp-head"><span class="bp-air">' + PLANE + c.airline + '</span><span class="bp-lab">' + label + '</span></div>' +
+      '<div class="bp-route">' +
+        '<div class="bp-port"><span class="bp-code">' + m[2] + '</span><span class="bp-zh">' + fromZh + '</span><span class="bp-term">' + r[3] + '</span><span class="bp-en">' + CITY_EN[m[2]] + '</span></div>' +
+        '<div class="bp-midw"><div class="bp-mid">' + PLANE + '</div><span class="bp-dur">' + r[5] + '</span></div>' +
+        '<div class="bp-port r"><span class="bp-code">' + m[5] + '</span><span class="bp-zh">' + toZh + '</span><span class="bp-term">' + r[4] + '</span><span class="bp-en">' + CITY_EN[m[5]] + '</span></div>' +
+      '</div><div class="bp-info">' +
+        cell('FLIGHT<br>航班', fno) +
+        cell('DEPART<br>起飛', '<div class="bp-v">' + m[3] + '</div>') +
+        cell('ARRIVE<br>抵達', '<div class="bp-v">' + m[6] + '</div>') +
+        cell('DATE<br>日期', '<div class="bp-v">' + r[1] + '</div>') +
+        (typeof people === 'number' ? cell('PASSENGERS<br>人數', '<div class="bp-v">' + people + ' 人</div>') : cell('PASSENGER<br>乘客', '<div class="bp-v">' + people + '</div>')) +
+      '</div></div>' +
+      '<div class="bp-stub"><div class="bp-stub-lab">BOARDING PASS</div>' +
+        '<div class="bp-stub-route">' + m[2] + '<span>→</span>' + m[5] + '</div><div class="bp-stub-city">' + fromZh + ' → ' + toZh + '</div>' +
+        '<div class="bp-stub-grid"><div><div class="bp-k">FLIGHT</div>' + fno + '</div><div><div class="bp-k">DATE</div><div class="bp-v">' + r[1] + '</div></div></div>' +
+        '<div class="bp-bar">' + BAR + '</div></div></div>';
+  }
+  function passes(c, people){
+    var h = '<div class="passes">';
+    c.out.forEach(function(r){ h += pass(r, c, '<span class="en">DEPARTURE · </span>去程', people); });
+    c.back.forEach(function(r){ h += pass(r, c, '<span class="en">RETURN · </span>回程', people); });
+    return h + '</div>';
+  }
+  function grpCards(k, focus){
+    var start = 0; ORDER.slice(0, ORDER.indexOf(k)).forEach(function(t){ start += GROUPS[t].length; });
+    var cls = TICKETS[k].cls;
+    return '<div class="grps">' + GROUPS[k].map(function(grp, i){
+      var on = focus && grp.indexOf(focus) !== -1;
+      return '<div class="grp-card ' + cls + (on ? ' hit' : '') + '"' + (on ? ' data-hit' : '') + '><div class="grp-k"><span>第 ' + (start + i + 1) + ' 組</span><span>' + grp.length + ' 人</span></div>' +
+        '<div class="grp-n">' + grp.map(function(n){ return '<span' + (n === focus ? ' class="hit"' : '') + '>' + n + '</span>'; }).join('') + '</div></div>';
+    }).join('') + '</div>';
+  }
+  var app = document.getElementById('app');
+  var total = ORDER.reduce(function(s,k){ return s + PEOPLE[k].length; }, 0);
+
+  // ===== 首頁 =====
+  function renderHome(){
+    var h = '<header class="hero"><span class="event">2027 NUSKIN 創心之旅</span>' +
+      '<h1 class="main-title"><span class="a">上海</span></h1>' +
+      '<div class="en-title">SHANGHAI · ' + total + ' TRAVELERS</div>' +
+      '<div class="trip-date">✈ 2027.02.22 — 02.25</div>' +
+      '<div class="trip-sub">公司活動 2/23～2/25，我們提早一天出發</div>' +
+      '<img class="hero-img" src="hero.jpg" alt="上海外灘與東方明珠塔的水彩插畫" width="1800" height="600" onerror="this.remove()"></header>';
+    h += '<section class="search-box"><div class="search"><label for="q"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>找人</label><input id="q" type="search" placeholder="輸入姓名，例如：林孝恩" autocomplete="off"></div>' +
+      '<p class="hint">輸入姓名，就會顯示他的班機時間和同行的人。</p><div class="results" id="res" aria-live="polite"></div></section>';
+    h += '<div class="picker">' + ORDER.map(function(k){
+      var t = TRIPS[k];
+      return '<a class="pick ' + t.cls + '" href="#' + k + '">' +
+        '<span class="pick-top">' + ICON[k] + '<span><span class="nm">' + t.name + '</span><span class="sb">' + t.sub + '</span></span>' +
+        '<span class="ct">' + PEOPLE[k].length + '<small>人</small></span></span>' +
+        '<span class="pick-bot"><span class="dt">' + nw(t.dates) + '</span><span class="go">看名單 ›</span></span></a>';
+    }).join('') + '</div>';
+    h += '<a class="allbtn" href="#all">看全部 ' + total + ' 人總名單 ›</a>';
+    h += '<section class="todo done"><h2>✅ 班機都有了</h2><ul>' +
+      '<li>高雄 ' + PEOPLE.khh.length + ' 人搭長榮 BR706／BR705（含王人美個別票，同一班）</li>' +
+      '<li>桃園 ' + PEOPLE.tpe.length + ' 人搭長榮 BR722／BR721</li></ul></section>';
+    h += '<p class="foot">資料取自試算表「機票+行程」與長榮行程單，整理於 2026/11/04</p>';
+    app.innerHTML = h;
+    var q = document.getElementById('q'), res = document.getElementById('res');
+    q.addEventListener('input', function(){
+      var v = q.value.trim(); res.innerHTML = '';
+      if (!v) return;
+      var found = [];
+      ORDER.forEach(function(k){ PEOPLE[k].forEach(function(p){ if (p[0].indexOf(v) !== -1) found.push([k,p]); }); });
+      if (!found.length){ var none = document.createElement('p'); none.textContent = '找不到「' + v + '」'; res.appendChild(none); return; }
+      var exact = found.filter(function(f){ return f[1][0] === v; });
+      if (found.length === 1 || exact.length === 1) { showPerson(exact[0] || found[0]); return; }
+      var tip = document.createElement('p'); tip.textContent = '找到 ' + found.length + ' 人，點名字看機票：'; res.appendChild(tip);
+      var list = document.createElement('div'); list.className = 'pick-names';
+      found.forEach(function(f){
+        var b = document.createElement('button'); b.type = 'button';
+        var nm = document.createElement('b'); nm.textContent = f[1][0];
+        var s = document.createElement('span'); s.textContent = TRIPS[f[0]].name + '・第 ' + f[1][2] + ' 組';
+        b.appendChild(nm); b.appendChild(s);
+        b.addEventListener('click', function(){ q.value = f[1][0]; showPerson(f); });
+        list.appendChild(b);
+      });
+      res.appendChild(list);
+    });
+    // 個人卡：姓名、票種、出發地、同行的人＋自己的登機證（乘客欄是本人）
+    function showPerson(f){
+      var k = f[0], p = f[1], t = TRIPS[k], tk = TICKETS[p[1]], c = carrierOf(p[1]);
+      var mates = groupOf(k, p[2]).filter(function(n){ return n !== p[0]; });
+      var h2 = '<div class="person"><div class="person-h"><span class="pname">' + p[0] + '</span><span class="chip ' + tk.cls + '">' + tk.label + '</span><span class="ptrip">第 ' + p[2] + ' 組</span></div>';
+      if (mates.length) h2 += '<div class="mates"><b>同行</b>' + mates.map(function(n){ return '<span>' + n + '</span>'; }).join('') + '</div>';
+      h2 += c.out ? passes(c, p[0]) : '<p class="warn-note">' + c.pending + '</p>';
+      h2 += '<a class="back" href="#' + k + '/' + encodeURIComponent(p[0]) + '">看' + t.name + '完整名單 ›</a></div>';
+      res.innerHTML = h2;
+    }
+  }
+
+  // ===== 團內頁：總名單 → 班次（登機證＋同行組） =====
+  function renderTrip(k, focus){
+    var t = TRIPS[k], list = PEOPLE[k];
+    var h = '<a class="back" href="#">‹ 回到首頁</a>';
+    h += '<div class="trip-head ' + (t.cls || k) + '"><div><h1><span>' + t.name + '｜</span><span>' + t.sub + '</span></h1><p>' + nw(t.dates) + '</p></div><span class="count">' + list.length + ' 人</span>';
+    if (t.route) h += '<div class="route">' + t.route.map(function(r){ return '<div class="stop"><div><b>' + r[0] + '</b>' + r[1] + '</div></div>'; }).join('') + '</div>';
+    h += '</div>';
+
+    // 1. 總名單
+    h += '<div class="step-h"><h2>總名單</h2><span class="note">' + list.length + ' 人・' + GROUPS[k].length + ' 組</span></div>';
+    h += '<div class="tblbox"><table><thead><tr><th>#</th><th>姓名</th><th>同行組</th><th>票種</th><th>班次</th></tr></thead><tbody>' +
+      list.map(function(p, i){
+        var tk = TICKETS[p[1]], first = i > 0 && list[i-1][2] !== p[2];
+        return '<tr class="' + tk.cls + (first ? ' newgrp' : '') + (p[0] === focus ? ' hit' : '') + '"' + (p[0] === focus ? ' data-hit' : '') + '><td class="no">' + (i+1) + '</td><td class="nm">' + p[0] + '</td><td class="grp">第 ' + p[2] + ' 組</td><td><span class="chip ' + tk.cls + '">' + tk.label + '</span></td><td>' + airTag(carrierOf(p[1])) + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+
+    // 2. 班次
+    h += '<div class="step-h"><h2>班次・去程＋回程</h2></div>';
+    t.carriers.forEach(function(ck){
+      var c = CARRIERS[ck];
+      h += '<section class="carrier"><div class="carrier-h"><span class="air ' + c.brand + '">' + c.name + '</span><span class="note">' + list.length + ' 人</span></div>';
+      h += c.out ? passes(c, list.length) : '<p class="warn-note">' + c.pending + '</p>';
+      h += '</section>';
+    });
+
+    // 3. 同行組
+    h += '<div class="step-h"><h2>同行組</h2><span class="note">照報名時一起的人分組</span></div>' + grpCards(k, focus);
+    h += '<a class="back" href="#">‹ 回到首頁</a>';
+    app.innerHTML = h;
+    var hit = app.querySelector('[data-hit]');
+    if (hit) hit.scrollIntoView({block:'center'});
+  }
+
+  // ===== 全部總名單 =====
+  function renderAll(){
+    var h = '<a class="back" href="#">‹ 回到首頁</a>';
+    h += '<div class="trip-head all"><div><h1>全部總名單</h1><p>' + ORDER.map(function(k){ return TRIPS[k].name + ' ' + PEOPLE[k].length; }).join('・') + '，共 ' + total + ' 人</p></div></div>';
+    h += '<div class="legend">' + ORDER.map(function(k){ return '<span class="' + TICKETS[k].cls + '">' + TRIPS[k].name + '<small>' + PEOPLE[k].length + ' 人</small></span>'; }).join('') + '</div>';
+    h += '<div class="tblbox"><table><thead><tr><th>#</th><th>姓名</th><th>出發</th><th>同行組</th><th>班次</th></tr></thead><tbody>';
+    var i = 0, prev = 0;
+    ORDER.forEach(function(k){
+      PEOPLE[k].forEach(function(p){
+        var tk = TICKETS[p[1]];
+        h += '<tr class="' + tk.cls + (i > 0 && p[2] !== prev ? ' newgrp' : '') + '"><td class="no">' + (++i) + '</td><td class="nm">' + p[0] + '</td><td><a href="#' + k + '">' + TRIPS[k].name + '</a></td><td class="grp">第 ' + p[2] + ' 組</td><td>' + airTag(carrierOf(p[1])) + '</td></tr>';
+        prev = p[2];
+      });
+    });
+    h += '</tbody></table></div><a class="back" href="#">‹ 回到首頁</a>';
+    app.innerHTML = h;
+  }
+
+  function route(){
+    var hash = decodeURIComponent((location.hash || '').replace(/^#/, ''));
+    var parts = hash.split('/');
+    if (TRIPS[parts[0]]) renderTrip(parts[0], parts[1]);
+    else if (parts[0] === 'all') renderAll();
+    else renderHome();
+    if (!parts[1]) window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+
+</body>
+</html>
